@@ -1,0 +1,12 @@
+<h1>Users</h1>
+<ul>
+{% for curr_user in users %}
+    <li>
+        {{ user.username }} <br>
+        {{ curr_user.first_name }} - {{ curr_user.last_name }} <br>
+        <img src="{{ curr_user.avatar.url }}" alt="avatar" height="300" width="300">
+    </li>
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+</ul>

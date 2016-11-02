@@ -1,0 +1,38 @@
+<body>
+    {% if user.is_authenticated %}Hello, {{ user.username }} <br>
+
+        <form method="get" action="/user/logout">
+            <input type="submit" value="logout">
+        </form>
+
+        {{ user_profile.first_name }} {{ user_profile.last_name }} <br>
+        <img src="{{ user_profile.avatar.url }}" alt="Avatar" height="300" width="300"> <br>
+
+        {% if user == user_profile %}
+            <form method="post" action="/newpost/">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="post">
+            </form>
+        {% else %}
+            <form method="post" action="subscribe/">
+                <input type="submit" value="subscibe">
+            </form>
+        {% endif %}
+
+        {% for curr_post in posts %}
+            <li>
+                {{ curr_post.type }} {{ curr_post.text }} <br>
+                {{ curr_post.time }}
+
+            </li>
+        {% empty %}
+            <li>
+                No posts yet.
+            </li>
+        {% endfor %}
+    {% else %}
+
+    {% endif %}
+</body>
+
