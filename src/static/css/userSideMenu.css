@@ -1,0 +1,29 @@
+.b-user_side_munu {
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+}
+
+.b-user_avatar {
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 250px;
+}
+
+.b-user_username {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+h2 {
+    text-align: center;
+}
+
+.b-user_avatar img {
+    margin-left: auto;
+    margin-right: auto;
+    width: 250px;
+    height: 250px;
+    border-radius: 125px;
+}

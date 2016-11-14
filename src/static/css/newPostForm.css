@@ -1,0 +1,21 @@
+.b-new_post {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    width: auto;
+    display: block;
+    padding: 0 25px;
+    margin-top: 20px;
+    line-height: 50px;
+    border-radius: 10px;
+    background-color: #414141;
+    border: 1px solid #ccc;
+}
+.b-new_post:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.post_maker {
+    margin: 10px;
+}
+
+.b-new_post_form {
+}

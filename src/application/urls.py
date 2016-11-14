@@ -15,17 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
 
-from application import settings
-from core.views import UserView, UserListView, newPost
+from core.views import UserListView, newPost, homePage, subscribe
 
 urlpatterns = [
-    url(r'^login/', login, {'template_name': 'core/login.html'}, name="login"),
-    url(r'^logout/', logout, {'template_name': 'core/logout.html'}, name="logout"),
     url(r'^admin/', admin.site.urls),
-    url(r'^user/', include('core.urls')),
+
+    url(r'^user/', include('core.urls', namespace='core')),
     url(r'^users/$', UserListView.as_view()),
-    url(r'^newpost/$', newPost),
+    url(r'^homepage/$', homePage, name='homePage'),
+    url(r'^subscribe/$', subscribe, name='subscribe'),
+    url(r'^newpost/$', newPost, name='newPost'),
 ]

@@ -1,0 +1,14 @@
+{# @params: friend #}
+
+<article class="b-friend">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="../../static/css/post.css">
+    <a class="friend_href_in_list" href="/user/{{ friend.username }}">
+        <div class="b-friend_card">
+            <img src="{{ friend.avatar.url }}" alt="Avatar" height="70" width="70">
+            <div class="b-friend_container">
+                <b>{{ friend.first_name }} {{ friend.last_name }}</b>
+            </div>
+        </div>
+    </a>
+</article>

@@ -1,0 +1,26 @@
+<div class="b-user_side_munu">
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="../../static/css/userSideMenu.css">
+    {% block user %}
+        {% if user.is_authenticated %}
+            <div class="b-user_avatar">
+                <img src="{{ user_profile.avatar.url }}" alt="Avatar" height="300" width="300"> <br>
+                <form method="post" enctype="multipart/form-data">
+                    <label class="custom-file">
+                        <input type="file" id="file" class="custom-file-input">
+                        <span class="custom-file-control"></span>
+                    </label>
+                </form>
+            </div>
+            <div class="b-user_username">
+                <h2>{{ user_profile.first_name }} {{ user_profile.last_name }}</h2>
+            </div>
+
+            <article class="b-user_friends">
+                {% for friend in friends %}
+                    {% include "core/friend_list.html" %}
+                {% endfor %}
+            </article>
+        {% endif %}
+    {% endblock %}
+</div>

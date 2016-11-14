@@ -1,15 +1,19 @@
 from datetime import datetime
 
 from django import forms
-from django.http import request
-from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 from django.views.generic import DetailView, ListView
 
 from post.models import Post
 from .models import User
 
 class NewPostForm(forms.Form):
-    text = forms.CharField()
+
+    text = forms.CharField(widget=forms.Textarea)
     TYPE = (
         (1, 'Plan'),
         (2, 'Achivement'),
@@ -19,16 +23,17 @@ class NewPostForm(forms.Form):
         choices=TYPE,
     )
 
-#def addFriend(request, username):
-    #if (request.method == 'POST'):
-
-
-    #return redirect('/user/' + username)
+    def __init__(self, *args, **kwargs):
+        super(NewPostForm, self).__init__(*args, **kwargs)
+        self.fields['type'].widget.attrs.update({'class': 'form-control'})
+        self.fields['text'].widget.attrs.update({'class': 'form-control'})
 
 def newPost(request):
     if (request.method == 'POST'):
+        print('start')
         form = NewPostForm(request.POST)
         if form.is_valid():
+            print("hello")
             data = form.cleaned_data
             post = Post(
                 type=data['type'],
@@ -41,9 +46,23 @@ def newPost(request):
 
     else:
         form = NewPostForm()
+    return redirect(reverse('homePage'))
+
+def homePage(request):
     return redirect('/user/' + request.user.username)
 
+class SubscribeForm(forms.Form):
+    user = forms.CharField(widget=forms.HiddenInput())
 
+def subscribe(request):
+    if (request.method == 'POST'):
+        form = SubscribeForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            User.objects.get(username=request.user.username).friends.add(
+                User.objects.get(username=data['user'])
+            )
+    return redirect(request.META.get('HTTP_REFERER'))
 
 class UserListView(ListView):
     model = User
@@ -74,12 +93,28 @@ class UserView(DetailView):
         context = super(UserView, self).get_context_data(**kwargs)
         currUser = User.objects.get(username=self.kwargs['slug'])
 
-        form = NewPostForm()
+        newPostForm = NewPostForm()
+        subscribeForm = SubscribeForm({'user' : self.kwargs['slug']})
         posts = Post.objects.filter(creator=currUser).order_by('-time')
+        friends = currUser.friends.all()
 
-        context['form'] = form
+        context['newPostForm'] = newPostForm
+        context['subscribeForm'] = subscribeForm
         context['posts'] = posts
+        context['friends'] = friends
         return context
 
+
+
+class RegisterForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2', 'avatar']
+
+
+
+class UserRegistration(CreateView):
+    form_class = RegisterForm
+    template_name = 'registration.html'
 
 # Create your views here.

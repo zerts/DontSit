@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 LOGIN_URL = 'core:login'
-LOGIN_REDIRECT_URL = '/users/'
+LOGIN_REDIRECT_URL = '/homepage/'
 
 
 # Application definition

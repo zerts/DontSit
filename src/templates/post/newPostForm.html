@@ -1,0 +1,30 @@
+{# @params: curr_form #}
+
+<div class="b-new_post">
+    {% load static %}
+        <link rel="stylesheet" type="text/css" href="../../static/css/newPostForm.css">
+    <div class="post_maker">
+        {% if user == user_profile %}
+            <div class="b-new_post_form">
+                <form method="post" action="{% url 'newPost' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ newPostForm.type }}
+                    </div>
+                    <div class="form-group">
+                        {{ newPostForm.text }}
+                    </div>
+                    <button class="btn btn-outline-success" type="submit">Post</button>
+                    <!--<input type="submit" value="post"> -->
+                </form>
+            </div>
+        {% else %}
+            <form method="post" action="{% url 'subscribe' %}">
+                {% csrf_token %}
+                {{ subscribeForm.user.as_hidden }}
+                <button class="btn btn-outline-success" type="submit">Subscribe</button>
+                <!--<input type="submit" value="subscibe"> -->
+            </form>
+        {% endif %}
+    </div>
+</div>
