@@ -1,26 +1,24 @@
-<div class="b-user_side_munu">
+<div class="b-user_side_menu">
     {% load static %}
         <link rel="stylesheet" type="text/css" href="../../static/css/userSideMenu.css">
     {% block user %}
         {% if user.is_authenticated %}
             <div class="b-user_avatar">
                 <img src="{{ user_profile.avatar.url }}" alt="Avatar" height="300" width="300"> <br>
-                <form method="post" enctype="multipart/form-data">
-                    <label class="custom-file">
-                        <input type="file" id="file" class="custom-file-input">
-                        <span class="custom-file-control"></span>
-                    </label>
-                </form>
+                {% if 'user' in request.get_full_path %}
+                    <form method="post" action="{% url 'updateAvatar' %}" enctype="multipart/form-data">
+                        <label class="custom-file">
+                            {% csrf_token %}
+                            {{ avatarChangeForm }}
+                            <span class="custom-file-control"></span>
+                            <input class="btn btn-primary" type="submit" value="Upload">
+                        </label>
+                    </form>
+                {% endif %}
             </div>
             <div class="b-user_username">
                 <h2>{{ user_profile.first_name }} {{ user_profile.last_name }}</h2>
             </div>
-
-            <article class="b-user_friends">
-                {% for friend in friends %}
-                    {% include "core/friend_list.html" %}
-                {% endfor %}
-            </article>
         {% endif %}
     {% endblock %}
 </div>

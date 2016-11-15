@@ -2,18 +2,22 @@
 
 <article class="b-post">
     {% load static %}
-          <link rel="stylesheet" type="text/css" href="../../static/css/post.css">
-    <a class="user_href_in_post" href="/user/{{ curr_post.creator.username }}">
-        <div class="b-post_creator">
+    <link rel="stylesheet" type="text/css" href="../../static/css/post.css">
+    <div class="b-post_creator">
+        <a class="user_href_in_post" href="/user/{{ curr_post.creator.username }}">
             <img src="{{ curr_post.creator.avatar.url }}" alt="Avatar" height="50" width="50">
             {{ curr_post.creator.first_name }} {{ curr_post.creator.last_name }} <br>
-        </div>
-    </a>
+        </a>
+    </div>
+    <div class="b-post_type">
+        <img src="/static/post_type/{{ curr_post.type }}.png">
+    </div>
     <div class="b-post_content">
         <div class="b-post_text">
-            {{ curr_post.type }}
             {{ curr_post.text }}
         </div>
     </div>
-    {{ curr_post.time |date:"d.m.Y H:i" }}
+    <div class="b-post_time">
+        {{ curr_post.time |date:"d.m.Y H:i" }}
+    </div>
 </article>

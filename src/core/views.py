@@ -1,4 +1,6 @@
 from datetime import datetime
+from itertools import chain
+from operator import attrgetter
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
@@ -48,6 +50,13 @@ def newPost(request):
         form = NewPostForm()
     return redirect(reverse('homePage'))
 
+class AvatarChangeForm(forms.Form):
+    file = forms.FileField()
+
+    def __init__(self, *args, **kwargs):
+        super(AvatarChangeForm, self).__init__(*args, **kwargs)
+        self.fields['file'].widget.attrs.update({'class': 'custom-file-input'})
+
 def homePage(request):
     return redirect('/user/' + request.user.username)
 
@@ -85,7 +94,7 @@ class UserListView(ListView):
 
 class UserView(DetailView):
     model = User
-    template_name = 'core/user.html'
+    template_name = 'user.html'
     slug_field = 'username'
     context_object_name = 'user_profile'
 
@@ -97,11 +106,13 @@ class UserView(DetailView):
         subscribeForm = SubscribeForm({'user' : self.kwargs['slug']})
         posts = Post.objects.filter(creator=currUser).order_by('-time')
         friends = currUser.friends.all()
+        changeAvatarForm = AvatarChangeForm()
 
         context['newPostForm'] = newPostForm
         context['subscribeForm'] = subscribeForm
         context['posts'] = posts
         context['friends'] = friends
+        context['avatarChangeForm'] = changeAvatarForm
         return context
 
 
@@ -117,4 +128,49 @@ class UserRegistration(CreateView):
     form_class = RegisterForm
     template_name = 'registration.html'
 
-# Create your views here.
+
+class FriendListVeiw(CreateView):
+
+    model = User
+    fields = ['username', 'avatar', 'first_name', 'last_name']
+    template_name = 'friends.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(FriendListVeiw, self).get_context_data(**kwargs)
+        currUser = User.objects.get(username=self.request.user.username)
+        friends = currUser.friends.all().order_by('-first_name')
+
+        context['user_profile'] = currUser
+        context['friends'] = friends
+        return context
+
+class FeedListVeiw(CreateView):
+    model = Post
+    fields = []
+    template_name = 'feed.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(FeedListVeiw, self).get_context_data(**kwargs)
+        currUser = User.objects.get(username=self.request.user.username)
+        posts = Post.objects.filter(creator=currUser)
+        friends = currUser.friends.all().order_by('-first_name')
+        for friend in friends:
+            posts = sorted(
+                chain(posts, Post.objects.filter(creator=friend)),
+                key=attrgetter('time'), reverse=True)
+        context['user_profile'] = currUser
+        context['posts'] = posts
+        return context
+    # Create your views here.
+
+
+
+def changeAvatar(request):
+    if (request.method == 'POST'):
+        form = AvatarChangeForm(request.POST, request.FILES)
+        print('start...')
+        if form.is_valid():
+            user = User.objects.get(username=request.user.username)
+            user.avatar = request.FILES['file']
+            user.save()
+    return redirect(request.META.get('HTTP_REFERER'))

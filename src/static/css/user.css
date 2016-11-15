@@ -10,13 +10,14 @@
     top: 60px; /* Положение от верхнего края */
     margin-right: 100px;
     background-color: #ccc;
+    border-radius: 10px;
     border: 1px solid #919191;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
     /* Ширина колонки */
 }
 
-.posts_all {
-    position: absolute; /* Абсолютное позиционирование */
-    top: 60px;
+.b-posts_all {
+    margin-top: 60px;
     z-index: 0;
 }
 

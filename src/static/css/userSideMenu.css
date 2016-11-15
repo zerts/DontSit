@@ -1,4 +1,4 @@
-.b-user_side_munu {
+.b-user_side_menu {
     margin-left: auto;
     margin-right: auto;
     width: 400px;
@@ -21,9 +21,14 @@ h2 {
 }
 
 .b-user_avatar img {
-    margin-left: auto;
-    margin-right: auto;
     width: 250px;
     height: 250px;
     border-radius: 125px;
+    object-fit: cover;
+    margin-bottom: 20px;
+    /*margin-left: auto;
+    margin-right: auto;
+    width: 250px;
+    height: auto;
+    border-radius: 125px;*/
 }

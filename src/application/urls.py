@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from core.views import UserListView, newPost, homePage, subscribe
+from core.views import UserListView, newPost, homePage, subscribe, FriendListVeiw, FeedListVeiw, changeAvatar
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -26,4 +26,7 @@ urlpatterns = [
     url(r'^homepage/$', homePage, name='homePage'),
     url(r'^subscribe/$', subscribe, name='subscribe'),
     url(r'^newpost/$', newPost, name='newPost'),
+    url(r'^friends/$', FriendListVeiw.as_view(), name='friends'),
+    url(r'^feed/$', FeedListVeiw.as_view(), name='feed'),
+    url(r'^updateavatar/$', changeAvatar, name='updateAvatar'),
 ]
