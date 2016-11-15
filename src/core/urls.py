@@ -12,7 +12,7 @@ urlpatterns = [
             template_name='registration.html',
             success_url=reverse_lazy('core:login')
         )),
-    url(r'login/$', login, kwargs={'template_name' : 'core/login.html',}, name='login'),
-    url(r'logout/$', logout, kwargs={'template_name' : 'core/logout.html',}, name='logout'),
+    url(r'login/$', login, kwargs={'template_name' : 'login.html',}, name='login'),
+    url(r'logout/$', logout, kwargs={'template_name' : 'logout.html',}, name='logout'),
     url(r'(?P<slug>[\w.@+-]+)/$', UserView.as_view()),
 ]

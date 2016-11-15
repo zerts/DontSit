@@ -1,0 +1,16 @@
+.b-login_form {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    background-color: #f9f9f9;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+.b-login_form_field {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: auto;
+    margin-left: auto;
+}

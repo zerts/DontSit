@@ -1,20 +1,32 @@
 <div class="b-user_side_menu">
     {% load static %}
-        <link rel="stylesheet" type="text/css" href="../../static/css/userSideMenu.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/userSideMenu.css">
     {% block user %}
         {% if user.is_authenticated %}
             <div class="b-user_avatar">
                 <img src="{{ user_profile.avatar.url }}" alt="Avatar" height="300" width="300"> <br>
-                {% if 'user' in request.get_full_path %}
-                    <form method="post" action="{% url 'updateAvatar' %}" enctype="multipart/form-data">
-                        <label class="custom-file">
-                            {% csrf_token %}
-                            {{ avatarChangeForm }}
-                            <span class="custom-file-control"></span>
-                            <input class="btn btn-primary" type="submit" value="Upload">
-                        </label>
-                    </form>
-                {% endif %}
+            </div>
+            <div class="b-user_avatar_change">
+                <div class="container">
+                    <div class="row">
+                        {% if 'user' in request.get_full_path %}
+                            <form method="post" action="{% url 'updateAvatar' %}" enctype="multipart/form-data">
+                                <label class="custom-file">
+                                    {% csrf_token %}
+                                    <div class="col-xs-1"></div>
+                                    <div class="col-xs-7">
+                                        {{ avatarChangeForm }}
+                                        <span class="custom-file-control"></span>
+                                    </div>
+                                    <div class="col-xs-4">
+
+                                        <input class="btn btn-primary" type="submit" value="Upload">
+                                    </div>
+                                </label>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
             <div class="b-user_username">
                 <h2>{{ user_profile.first_name }} {{ user_profile.last_name }}</h2>

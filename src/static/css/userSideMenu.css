@@ -12,6 +12,7 @@
 }
 
 .b-user_username {
+    margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
@@ -31,4 +32,9 @@ h2 {
     width: 250px;
     height: auto;
     border-radius: 125px;*/
+}
+
+.b-user_avatar_change {
+    margin-right: auto;
+    margin-left: auto;
 }
