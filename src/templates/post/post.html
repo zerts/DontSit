@@ -1,27 +1,44 @@
 {# @params: curr_post #}
 
 <article class="b-post">
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="../../static/css/post.css">
-    <div class="b-post_header">
-        <div class="b-post_creator">
-            <a class="user_href_in_post" href="/user/{{ curr_post.creator.username }}">
-                <img src="{{ curr_post.creator.avatar.url }}" alt="Avatar" height="50" width="50">
-                {{ curr_post.creator.first_name }} {{ curr_post.creator.last_name }} <br>
-            </a>
-        </div>
-        <div class="b-post_time">
-            {{ curr_post.time |date:"d.m.Y H:i" }}
-        </div>
-    </div>
-    <div class="b-post_body">
-        <div class="b-post_type">
-            <img src="/static/post_type/{{ curr_post.type }}.png">
-        </div>
-        <div class="b-post_content">
-            <div class="b-post_text">
-                {{ curr_post.text|linebreaks }}
+    <div class="container">
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
+
+        <div class="row" id="b-post_header">
+            <div class="col-xs-8" style="padding-left: 0">
+                <div id="b-post_creator">
+                    <a class="user_href_in_post" href="{% url 'core:username' curr_post.creator.username %}">
+                        <img src="{{ curr_post.creator.avatar.url }}" alt="Avatar" height="50" width="50">
+                        {{ curr_post.creator.first_name }} {{ curr_post.creator.last_name }} <br>
+                    </a>
+                </div>
+            </div>
+            <div class="col-xs-4" id="b-post_time">
+                {{ curr_post.time |date:"d.m.Y H:i" }}
             </div>
         </div>
-    </div>
+        <div class="row" id="b-post_body">
+            <div class="col-xs-1" id="b-post_type">
+                <img src="/static/post_type/{{ curr_post.type }}.png">
+            </div>
+            <div class="col-xs-11" id="b-post_content">
+                <div class="b-post_text">
+                    {{ curr_post.text|linebreaks }}
+                </div>
+            </div>
+        </div>
+        <div class="row" id="b-post_footer">
+            <div class="col-md-5 offset-md-5" id="b-post_likes">
+
+                <div class="post-likes-form" data-likes-url="{% url 'post:likes' pk=curr_post.pk %}">
+                    <button type="button" class="btn btn-default btn-md">
+                        <span class="post-likes" aria-hidden="true"
+                              data-post-id="{{ curr_post.pk }}">
+                            0
+                        </span> Likes
+                    </button>
+                </div>
+            </div>
+        </div>
 </article>

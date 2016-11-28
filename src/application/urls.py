@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(r'^user/', include('core.urls', namespace='core')),
+    url(r'^post/', include('post.urls', namespace='post')),
     url(r'^users/$', UserListView.as_view()),
     url(r'^homepage/$', homePage, name='homePage'),
     url(r'^subscribe/$', subscribe, name='subscribe'),
@@ -29,4 +30,5 @@ urlpatterns = [
     url(r'^friends/$', FriendListVeiw.as_view(), name='friends'),
     url(r'^feed/$', FeedListVeiw.as_view(), name='feed'),
     url(r'^updateavatar/$', changeAvatar, name='updateAvatar'),
+
 ]

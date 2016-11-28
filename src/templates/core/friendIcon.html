@@ -2,7 +2,7 @@
 
 <article class="b-friend">
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="../../static/css/friendIcon.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/friendIcon.css' %}">
     <a class="friend_href_in_list" href="/user/{{ friend.username }}">
         <div class="b-friend_avatar">
             <img src="{{ friend.avatar.url }}" alt="Avatar" height="70" width="70">

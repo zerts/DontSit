@@ -2,7 +2,7 @@
 
 <div class="b-new_post">
     {% load static %}
-        <link rel="stylesheet" type="text/css" href="../../static/css/newPostForm.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/newPostForm.css' %}">
     <div class="post_maker">
         {% if user == user_profile %}
             <div class="b-new_post_form">

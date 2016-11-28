@@ -6,7 +6,10 @@ from django.views.generic import CreateView
 
 from views import UserView, RegisterForm, subscribe, newPost
 
+from django.views.decorators.csrf import csrf_exempt
+
 urlpatterns = [
+    url(r'(?P<slug>[\w.@+-]+)/$', UserView.as_view(), name='username'),
     url(r'register/$', CreateView.as_view(
             form_class=RegisterForm,
             template_name='registration.html',
@@ -14,5 +17,4 @@ urlpatterns = [
         )),
     url(r'login/$', login, kwargs={'template_name' : 'login.html',}, name='login'),
     url(r'logout/$', logout, kwargs={'template_name' : 'logout.html',}, name='logout'),
-    url(r'(?P<slug>[\w.@+-]+)/$', UserView.as_view()),
 ]

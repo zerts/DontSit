@@ -8,7 +8,6 @@
 .user_side_card {
     position: fixed; /* Set the navbar to fixed position */
     top: 60px; /* Положение от верхнего края */
-    margin-right: 100px;
     background-color: #ccc;
     border-radius: 10px;
     border: 1px solid #919191;

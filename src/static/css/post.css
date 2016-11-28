@@ -10,11 +10,12 @@
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
 }
 
-.b-post_header {
+#b-post_header {
     display: block;
+    margin-left: -20px;
 }
 
-.b-post_creator {
+#b-post_creator {
     display: inline-block;
     padding: 0 25px;
     margin-top: 10px;
@@ -27,12 +28,12 @@
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
 }
 
-.b-post_time {
+#b-post_time {
     display: inline-block;
-    float: right;
+    text-align: right;
 }
 
-.b-post_creator img {
+#b-post_creator img {
     float: left;
     display: inline-block;
     margin: 0 10px 0 -25px;
@@ -46,11 +47,15 @@
     margin: 10px 10px 10px 10px;
 }
 
-.b-post_body {
+#b-post_body {
+    display: block;
     margin: 20px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
-.b-post_type {
+#b-post_type {
+    padding-left: 0;
     float:left;
     margin-left: -20px;
     margin-right: 20px;
@@ -61,7 +66,7 @@
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
 }
 
-.b-post_type img {
+#b-post_type img {
     width: 30px;
     height: 30px;
     margin-left: 10px;
@@ -70,7 +75,7 @@
 
 }
 
-.b-post_content {
+#b-post_content {
     display: inline-block;
     margin-right: -30px;
     border-radius: 10px;
@@ -83,6 +88,13 @@
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
 }
 
-.b-post_time {
+#b-post_time {
+    margin-top: 20px;
     display: block;
+    line-height: 20px;
+}
+
+#b-post_footer {
+    margin: 20px;
+    margin-right: 0;
 }
