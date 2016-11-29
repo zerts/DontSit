@@ -1,11 +1,27 @@
 import json
 
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import DetailView
 from django.views.generic import View
 
 from core.models import User
 from post.models import Post, Like
+
+
+def editPost(request, pk):
+    print(pk)
+    print(request.POST.get('post_text'))
+    if (request.method == 'POST'):
+        curr_post = Post.objects.get(pk=pk)
+        curr_post.text = request.POST.get('post_text')
+        curr_post.save()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+class PostView(DetailView):
+    template_name = 'post/editPostForm.html'
+    model = Post
+    context_object_name = 'curr_post'
 
 
 class PostLikes(View):

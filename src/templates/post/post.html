@@ -1,9 +1,19 @@
 {# @params: curr_post #}
 
 <article class="b-post">
-    <div class="container">
-        {% load static %}
+    {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
+
+    <div class="b-post-edit-back" id="b-post-edit-back{{ curr_post.pk }}">
+        <div class="b-post-background">
+
+        </div>
+        <div class="b-post-edit-form">
+            {% include "post/editPostForm.html" %}
+        </div>
+    </div>
+
+    <div class="container">
 
         <div class="row" id="b-post_header">
             <div class="col-xs-8" style="padding-left: 0">
@@ -29,14 +39,20 @@
             </div>
         </div>
         <div class="row" id="b-post_footer">
-            <div class="col-md-5 offset-md-5" id="b-post_likes">
+            <div class="col-xs-6">
+                <a class="b-post-edit-button" data-post-id="{{ curr_post.pk }}">
+                    <button class="btn btn-outline-success" type="submit">Edit</button>
+                    <!--<input type="submit" value="post"> -->
+                </a>
+            </div>
 
+            <div class="col-xs-6" id="b-post_likes">
                 <div class="post-likes-form" data-likes-url="{% url 'post:likes' pk=curr_post.pk %}">
                     <button type="button" class="btn btn-default btn-md">
                         <span class="post-likes" aria-hidden="true"
                               data-post-id="{{ curr_post.pk }}">
                             0
-                        </span> Likes
+                        </span> Likes {{ curr_post.pk }}
                     </button>
                 </div>
             </div>

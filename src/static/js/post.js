@@ -42,13 +42,15 @@ $(document).ready(function() {
         });
 
         $.getJSON('/post/likes/', {ids: ids.join(',')}, function (data) {
+            console.log(data);
             for (var i in data) {
                 $('.post-likes[data-post-id='+i+']').html(data[i]);
             }
         });
     }
+    updateLikes();
 
-    window.setInterval(updateLikes, 1000);
+    window.setInterval(updateLikes, 5000);
 
     $('.post-likes-form').click(function() {
         var url = $(this).data('likes-url');
@@ -56,6 +58,13 @@ $(document).ready(function() {
         $.post(url, function(data) {
             updateLikes();
         });
+    });
+
+    $('.b-post-edit-button').click(function () {
+        var curr_id = ($(this).data('post-id'));
+        console.log(curr_id);
+        $('#b-post-edit-back'+curr_id).show();
+        return false;
     });
 
     //window.setInterval(updateLikes, 5000);
