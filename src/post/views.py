@@ -1,21 +1,40 @@
 import json
 
+from django import forms
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DetailView
 from django.views.generic import View
 
 from core.models import User
 from post.models import Post, Like
 
+class EditPostForm(forms.Form):
+
+    text = forms.CharField(widget=forms.Textarea)
+    TYPE = (
+        (1, 'Plan'),
+        (2, 'Achivement'),
+        (3, 'Competition'),
+    )
+    type = forms.ChoiceField(
+        choices=TYPE,
+    )
+    def __init__(self, *args, **kwargs):
+        super(EditPostForm, self).__init__(*args, **kwargs)
+        self.fields['type'].widget.attrs.update({'class': 'form-control'})
+        self.fields['text'].widget.attrs.update({'class': 'form-control'})
+
 
 def editPost(request, pk):
-    print(pk)
-    print(request.POST.get('post_text'))
     if (request.method == 'POST'):
-        curr_post = Post.objects.get(pk=pk)
-        curr_post.text = request.POST.get('post_text')
-        curr_post.save()
+        form = EditPostForm(request.POST)
+        if (form.is_valid()):
+            data = form.cleaned_data
+            curr_post = Post.objects.get(pk=pk)
+            curr_post.type = data['type']
+            curr_post.text = data['text']
+            curr_post.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
 class PostView(DetailView):
@@ -31,9 +50,10 @@ class PostLikes(View):
         ids = ids.split(',')
         posts = dict()
         for i in ids:
-            posts[i] = [x.username for x in list(
+            posts[i] = [str(x.avatar) for x in list(
                 User.objects.filter(
-                    pk__in=Post.objects.get(pk=i).likes.all().values('creator')))]
+                    pk__in=Post.objects.get(pk=i).likes.all().values('creator'))
+            )]
         return HttpResponse(json.dumps(posts))
 
 class PostLikesView(View):

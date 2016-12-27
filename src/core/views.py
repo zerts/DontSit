@@ -4,14 +4,17 @@ from operator import attrgetter
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic import DetailView, ListView
+from django.views.generic import FormView
 
 from post.models import Post
+from post.views import EditPostForm
 from .models import User
+
 
 class NewPostForm(forms.Form):
 
@@ -32,10 +35,8 @@ class NewPostForm(forms.Form):
 
 def newPost(request):
     if (request.method == 'POST'):
-        print('start')
         form = NewPostForm(request.POST)
         if form.is_valid():
-            print("hello")
             data = form.cleaned_data
             post = Post(
                 type=data['type'],
@@ -56,6 +57,15 @@ class AvatarChangeForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(AvatarChangeForm, self).__init__(*args, **kwargs)
         self.fields['file'].widget.attrs.update({'class': 'custom-file-input'})
+
+class UsernameChangeForm(forms.Form):
+    firstName = forms.CharField()
+    lastName = forms.CharField()
+
+    def __init__(self, *args, **kwargs):
+        super(UsernameChangeForm, self).__init__(*args, **kwargs)
+        self.fields['firstName'].widget.attrs.update({'class': 'form-control'})
+        self.fields['lastName'].widget.attrs.update({'class': 'form-control'})
 
 def homePage(request):
     return redirect('/user/' + request.user.username)
@@ -103,16 +113,22 @@ class UserView(DetailView):
         currUser = User.objects.get(username=self.kwargs['slug'])
 
         newPostForm = NewPostForm()
+        editPostForm = EditPostForm()
         subscribeForm = SubscribeForm({'user' : self.kwargs['slug']})
-        posts = Post.objects.filter(creator=currUser).order_by('-time')
+        posts = Post.objects.all().show_my(currUser)
+        posts = posts.select_related('creator')
+        #posts = Post.objects.filter(creator=currUser).order_by('-time')
         friends = currUser.friends.all()
         changeAvatarForm = AvatarChangeForm()
+        changeUsernameForm = UsernameChangeForm()
 
         context['newPostForm'] = newPostForm
+        context['editPostForm'] = editPostForm
         context['subscribeForm'] = subscribeForm
         context['posts'] = posts
         context['friends'] = friends
         context['avatarChangeForm'] = changeAvatarForm
+        context['usernameChangeForm'] = changeUsernameForm
         return context
 
 
@@ -120,13 +136,26 @@ class UserView(DetailView):
 class RegisterForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2', 'avatar']
+        fields = ['username', 'password1', 'password2', 'first_name', 'last_name', 'avatar']
 
 
 
 class UserRegistration(CreateView):
     form_class = RegisterForm
     template_name = 'registration.html'
+    success_url = reverse_lazy('core:login')
+
+    def form_valid(self, form):
+        print("hello")
+        if not form.instance.avatar:
+            form.instance.avatar = "/avatars/default.png"
+        if not form.instance.first_name:
+            form.instance.first_name = "First"
+        if not form.instance.last_name:
+            form.instance.last_name = "last"
+        form.save()
+        return super(UserRegistration, self).form_valid(form)
+
 
 
 class FriendListVeiw(CreateView):
@@ -152,11 +181,13 @@ class FeedListVeiw(CreateView):
     def get_context_data(self, **kwargs):
         context = super(FeedListVeiw, self).get_context_data(**kwargs)
         currUser = User.objects.get(username=self.request.user.username)
-        posts = Post.objects.filter(creator=currUser)
+        posts = Post.objects.all().show_my(currUser)
+        posts = posts.select_related('creator')
+        #posts = Post.objects.filter(creator=currUser)
         friends = currUser.friends.all().order_by('-first_name')
         for friend in friends:
             posts = sorted(
-                chain(posts, Post.objects.filter(creator=friend)),
+                chain(posts, Post.objects.all().show_my(friend)),
                 key=attrgetter('time'), reverse=True)
         context['user_profile'] = currUser
         context['posts'] = posts
@@ -168,9 +199,19 @@ class FeedListVeiw(CreateView):
 def changeAvatar(request):
     if (request.method == 'POST'):
         form = AvatarChangeForm(request.POST, request.FILES)
-        print('start...')
         if form.is_valid():
             user = User.objects.get(username=request.user.username)
             user.avatar = request.FILES['file']
+            user.save()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+def changeName(request, slug):
+    if (request.method == 'POST'):
+        form = UsernameChangeForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            user = User.objects.get(username=slug)
+            user.first_name = data['firstName']
+            user.last_name = data['lastName']
             user.save()
     return redirect(request.META.get('HTTP_REFERER'))

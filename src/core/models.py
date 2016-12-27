@@ -9,6 +9,7 @@ class User(AbstractUser):
     friends = models.ManyToManyField('self')
 
 
+
 class Achievment(models.Model):
     avatar = models.ImageField(null=True)
     type = models.IntegerField(default=0)

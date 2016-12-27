@@ -2,14 +2,12 @@
 
 <article class="b-post">
     {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
+    {% load widget_tweaks %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
 
     <div class="b-post-edit-back" id="b-post-edit-back{{ curr_post.pk }}">
         <div class="b-post-background">
 
-        </div>
-        <div class="b-post-edit-form">
-            {% include "post/editPostForm.html" %}
         </div>
     </div>
 
@@ -39,22 +37,61 @@
             </div>
         </div>
         <div class="row" id="b-post_footer">
-            <div class="col-xs-6">
+
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'post:edit' pk=curr_post.pk %}">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Edit post</h4>
+                            </div>
+                            <div class="modal-body">
+
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    {{ editPostForm.type | add_class:"edit-type-choice" }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="text">Post text</label>
+                                    <textarea name="post_text" class="form-control" id="text" rows="3">{{ curr_post.text }}</textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-success" type="submit">Save</button>
+                                <!--<input type="submit" value="post"> -->
+
+
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-xs-1">
                 <a class="b-post-edit-button" data-post-id="{{ curr_post.pk }}">
-                    <button class="btn btn-outline-success" type="submit">Edit</button>
+                    <button class="btn btn-info btn-md edit-start-button" data-toggle="modal"
+                            data-target="#myModal" type="button"
+                            data-post-type="{{ curr_post.type }}">
+                        Edit
+                    </button>
                     <!--<input type="submit" value="post"> -->
                 </a>
             </div>
 
-            <div class="col-xs-6" id="b-post_likes">
+            <div class="col-xs float-xs-right" id="b-post_likes">
                 <div class="post-likes-form" data-likes-url="{% url 'post:likes' pk=curr_post.pk %}">
+                    <span class="post-likes" aria-hidden="true" data-post-id="{{ curr_post.pk }}">                        </span>
                     <button type="button" class="btn btn-default btn-md">
-                        <span class="post-likes" aria-hidden="true"
-                              data-post-id="{{ curr_post.pk }}">
-                            0
-                        </span> Likes {{ curr_post.pk }}
+                        Likes
+                        <span class="post-likes-count" data-post-id="{{ curr_post.pk }}">0</span>
                     </button>
                 </div>
             </div>
         </div>
+    </div>
 </article>

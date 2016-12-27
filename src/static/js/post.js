@@ -42,15 +42,25 @@ $(document).ready(function() {
         });
 
         $.getJSON('/post/likes/', {ids: ids.join(',')}, function (data) {
-            console.log(data);
+            //console.log(data);
             for (var i in data) {
-                $('.post-likes[data-post-id='+i+']').html(data[i]);
+                var likers = "";
+                for (var curr in data[i]) {
+                    likers += "<img src=\"/media/" + data[i][curr] + "\" alt=\"Avatar\" height=\"30\" width=\"30\" style='border-radius: 15px;'>";
+                }
+                //console.log(data[i]);
+                $('.post-likes[data-post-id='+i+']').html(likers);
+                $('.post-likes-count[data-post-id='+i+']').html(data[i].length)
             }
         });
     }
     updateLikes();
 
     window.setInterval(updateLikes, 5000);
+
+    function updatePosts() {
+
+    }
 
     $('.post-likes-form').click(function() {
         var url = $(this).data('likes-url');
@@ -60,12 +70,18 @@ $(document).ready(function() {
         });
     });
 
-    $('.b-post-edit-button').click(function () {
+    $('.edit-start-button').click(function() {
+        var post_type = $(this).data('post-type');
+        console.log(post_type);
+        $('.edit-type-choice > option[value="' + post_type + '"]').prop('selected', true);
+    });
+
+    /*$('.b-post-edit-button').click(function () {
         var curr_id = ($(this).data('post-id'));
         console.log(curr_id);
         $('#b-post-edit-back'+curr_id).show();
         return false;
-    });
+    });*/
 
     //window.setInterval(updateLikes, 5000);
 

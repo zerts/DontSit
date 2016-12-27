@@ -1,0 +1,16 @@
+.b-register_form {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    background-color: #f9f9f9;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+.b-register_form_field {
+    margin-top: 30px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 30px;
+}
