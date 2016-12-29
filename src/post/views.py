@@ -31,7 +31,7 @@ def editPost(request, pk):
         form = EditPostForm(request.POST)
         if (form.is_valid()):
             data = form.cleaned_data
-            curr_post = Post.objects.get(pk=pk)
+            curr_post = Post.objects.get_object_or_404(pk=pk)
             curr_post.type = data['type']
             curr_post.text = data['text']
             curr_post.save()

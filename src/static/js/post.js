@@ -41,7 +41,7 @@ $(document).ready(function() {
             ids.push($(this).data('post-id'));
         });
 
-        $.getJSON('/post/likes/', {ids: ids.join(',')}, function (data) {
+        $.getJSON($('.likes-url').data('likes-url'), {ids: ids.join(',')}, function (data) {
             //console.log(data);
             for (var i in data) {
                 var likers = "";

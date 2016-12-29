@@ -36,7 +36,7 @@
                                     {% csrf_token %}
                                     <div class="col-xs-1"></div>
                                     <div class="col-xs-7">
-                                        {{ avatarChangeForm }}
+                                        {{ avatarChangeForm.file|add_class:"custom-file-input" }}
                                         <span class="custom-file-control"></span>
                                     </div>
                                     <div class="col-xs-4">
@@ -50,8 +50,8 @@
                              data-last-name="{{ user_profile.last_name }}" style="display: none">
                             <form method="post" action="{% url 'core:updateUsername' slug=user_profile.username%}" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                {{ usernameChangeForm.firstName }}
-                                {{ usernameChangeForm.lastName }}
+                                {{ usernameChangeForm.firstName|add_class:"form-control" }}
+                                {{ usernameChangeForm.lastName|add_class:"form-control" }}
                                 <input class="btn btn-primary" type="submit" value="Change name">
                             </form>
                         </div>

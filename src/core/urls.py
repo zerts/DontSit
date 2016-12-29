@@ -1,12 +1,8 @@
 from django.conf.urls import url
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login, logout
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
 
-from views import UserView, RegisterForm, subscribe, newPost, UserRegistration, changeName
 
-from django.views.decorators.csrf import csrf_exempt
+from views import UserView, UserRegistration, changeName
 
 urlpatterns = [
     url(r'register/$', UserRegistration.as_view()),

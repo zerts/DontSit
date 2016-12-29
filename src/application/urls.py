@@ -16,12 +16,14 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf.urls.i18n import i18n_patterns
 
 from core.views import UserListView, newPost, homePage, subscribe, FriendListVeiw, FeedListVeiw, changeAvatar
 
-urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+urlpatterns = []
 
+urlpatterns += i18n_patterns(
+    url(r'^admin/', admin.site.urls),
     url(r'^user/', include('core.urls', namespace='core')),
     url(r'^post/', include('post.urls', namespace='post')),
     url(r'^users/$', UserListView.as_view()),
@@ -31,8 +33,7 @@ urlpatterns = [
     url(r'^friends/$', FriendListVeiw.as_view(), name='friends'),
     url(r'^feed/$', FeedListVeiw.as_view(), name='feed'),
     url(r'^updateavatar/$', changeAvatar, name='updateAvatar'),
-
-]
+)
 
 if settings.DEBUG:
     import debug_toolbar

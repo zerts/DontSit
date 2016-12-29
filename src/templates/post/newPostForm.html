@@ -2,6 +2,7 @@
 
 <div class="b-new_post">
     {% load static %}
+{% load widget_tweaks %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/newPostForm.css' %}">
     <div class="post_maker">
         {% if user == user_profile %}
@@ -9,10 +10,10 @@
                 <form method="post" action="{% url 'newPost' %}">
                     {% csrf_token %}
                     <div class="form-group">
-                        {{ newPostForm.type }}
+                        {{ newPostForm.type|add_class:'form-control'}}
                     </div>
                     <div class="form-group">
-                        {{ newPostForm.text }}
+                        {{ newPostForm.text|add_class:'form-control' }}
                     </div>
                     <button class="btn btn-outline-success" type="submit">Post</button>
                     <!--<input type="submit" value="post"> -->

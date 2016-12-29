@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="text">Post text</label>
-                                    <textarea name="post_text" class="form-control" id="text" rows="3">{{ curr_post.text }}</textarea>
+                                    <textarea name="text" class="form-control" id="text" rows="3">{{ curr_post.text }}</textarea>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -94,4 +94,5 @@
             </div>
         </div>
     </div>
+    <div class="likes-url" data-likes-url="{% url 'post:likes_all' %}"></div>
 </article>

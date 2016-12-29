@@ -11,16 +11,20 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+from ConfigParser import ConfigParser
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+config = ConfigParser()
+config.read(os.path.join(BASE_DIR, '../dontsit.conf'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')_v26a^4y_$1^r#47lzbrb5)jasa^@l99!)l7q=_8$3&my8+ss'
+SECRET_KEY = config.get('main', 'SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -50,6 +54,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -59,6 +64,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'application.urls'
+
+LANGUAGE_CODE = 'en'
+
+LANGUAGES = [
+    ('ru', 'Russian'),
+    ('en', 'English'),
+]
+
+LOCALE_PATHS = (
+    os.path.join("locales"),
+)
 
 TEMPLATES = [
     {
@@ -111,8 +127,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 

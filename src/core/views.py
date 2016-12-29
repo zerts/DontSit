@@ -30,8 +30,6 @@ class NewPostForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(NewPostForm, self).__init__(*args, **kwargs)
-        self.fields['type'].widget.attrs.update({'class': 'form-control'})
-        self.fields['text'].widget.attrs.update({'class': 'form-control'})
 
 def newPost(request):
     if (request.method == 'POST'):
@@ -56,7 +54,6 @@ class AvatarChangeForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(AvatarChangeForm, self).__init__(*args, **kwargs)
-        self.fields['file'].widget.attrs.update({'class': 'custom-file-input'})
 
 class UsernameChangeForm(forms.Form):
     firstName = forms.CharField()
@@ -64,8 +61,6 @@ class UsernameChangeForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(UsernameChangeForm, self).__init__(*args, **kwargs)
-        self.fields['firstName'].widget.attrs.update({'class': 'form-control'})
-        self.fields['lastName'].widget.attrs.update({'class': 'form-control'})
 
 def homePage(request):
     return redirect('/user/' + request.user.username)
